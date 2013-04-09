@@ -40,6 +40,7 @@ class UploadBehavior extends ModelBehavior {
 		'thumbnailPath'		=> null,
 		'thumbnailPrefixStyle'=> true,
 		'thumbnailQuality'	=> 75,
+		'thumbnailQualityPng'	=> 8,		
 		'thumbnailSizes'	=> array(),
 		'thumbnailType'		=> false,
 		'deleteOnUpdate'	=> false,
@@ -1045,11 +1046,11 @@ class UploadBehavior extends ModelBehavior {
 			imagecopyresampled($img, $src, ($destW-$resizeW)/2, ($destH-$resizeH)/2, 0, 0, $resizeW, $resizeH, $srcW, $srcH);
 
 			if ($supportsThumbnailQuality) {
-			 if ($outputHandler == 'imagepng') {
-                    		$outputHandler($img, $destFile, 8);
-                	} else {
-                    		$outputHandler($img, $destFile, $this->settings[$model->alias][$field]['thumbnailQuality']);
-                		}
+
+			if($thumbnailType == 'png')
+				$outputHandler($img, $destFile, $this->settings[$model->alias][$field]['thumbnailQualityPng']);
+			else
+				$outputHandler($img, $destFile, $this->settings[$model->alias][$field]['thumbnailQuality']);
 			} else {
 				$outputHandler($img, $destFile);
 			}
